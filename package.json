@@ -1,0 +1,45 @@
+{
+  "name": "openclaw-api-credits-lite",
+  "version": "1.0.0",
+  "description": "Display API credit balances with video game style health bars - Lite version for 5 core providers",
+  "main": "scripts/show_credits.py",
+  "scripts": {
+    "credits": "python3 scripts/show_credits.py",
+    "sync": "python3 scripts/sync_provider.py",
+    "topup": "python3 scripts/topup.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openclaw/openclaw-api-credits-lite.git"
+  },
+  "keywords": [
+    "api",
+    "credits",
+    "billing",
+    "health-bar",
+    "anthropic",
+    "openai",
+    "openrouter",
+    "mistral",
+    "groq",
+    "openclaw"
+  ],
+  "author": "OpenClaw",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/openclaw/openclaw-api-credits-lite/issues"
+  },
+  "homepage": "https://github.com/openclaw/openclaw-api-credits-lite#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ]
+}
