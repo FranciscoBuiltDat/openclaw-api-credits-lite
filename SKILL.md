@@ -1,6 +1,13 @@
 ---
 name: api-credits-lite
-description: Display API credit balances for 5 core providers (Anthropic, OpenAI, OpenRouter, Mistral, Groq) with video game style health bars. Manual sync only - perfect for personal usage tracking.
+description: Display API credit balances for 5 core providers (Anthropic, OpenAI, OpenRouter, Mistral, Groq) with video game style health bars. API auto-checks and manual sync.
+optionalEnv:
+  - OPENAI_API_KEY
+  - OPENROUTER_API_KEY
+  - VERCEL_AI_GATEWAY_KEY
+permissions:
+  - network: Contact OpenAI, OpenRouter, and Vercel APIs to check balances (optional)
+  - filesystem: Read/write config.json and health bar display
 ---
 
 # API Credits Lite
