@@ -12,160 +12,103 @@ permissions:
 
 # API Credits Lite
 
-Display API credit balances with retro video game health bars. Lightweight version with manual sync for 5 core providers.
+Use this skill when the user asks about API credits, balances, spending, or wants to update their credit info for Anthropic, OpenAI, OpenRouter, Mistral, or Groq.
 
-## Features
+## When to Use
 
-- 🎮 **Video game style health bars** - Visual credit tracking
-- 📊 **5 Core Providers** - Anthropic, OpenAI, OpenRouter, Mistral, Groq
-- 🔄 **API-based auto-tracking** - Automated checks for OpenAI, OpenRouter, Vercel
-- 📋 **Manual sync** - Update balances from provider consoles
-- ⚠️ **Threshold alerts** - Warning and critical levels
-- 💰 **Top-up tracking** - Record when you add credits
+✅ **USE this skill when the user asks:**
 
-## Quick Start
+- "How much credit do I have left?" / "What's my balance?"
+- "Show my API credits" / "Check my credits"
+- "Update my [provider] balance to $X"
+- "I topped up [provider] by $X"
+- "Am I running low on [provider]?"
 
-```bash
-# Show current credits
-python3 scripts/show_credits.py
+❌ **DON'T use when:**
+- The user needs 16+ providers, JSONL auto-tracking, cloud SDKs, or heartbeat integration → use **api-credits-pro**
 
-# Auto-check OpenAI balance (requires OPENAI_API_KEY env var)
-OPENAI_API_KEY=sk-... python3 scripts/check_openai.py
+## How to Use
 
-# Auto-check OpenRouter (requires OPENROUTER_API_KEY env var)
-OPENROUTER_API_KEY=sk-... python3 scripts/check_openrouter.py
+You run the scripts internally — the user never types `python3`. Respond naturally and present health bar output conversationally.
 
-# Manual sync for providers without APIs
-python3 scripts/sync_provider.py anthropic 45.00
+The skill root is at: `~/.openclaw/workspace/skills/api-credits-lite/`
+Run scripts with: `python3 <skill-root>/scripts/<script>.py <args>`
 
-# Add credits (top-up)
-python3 scripts/topup.py openai 25
-```
+---
 
-## Supported Providers
+## Show Credit Balances
 
-| Provider | Console URL | Sync Command |
-|----------|-------------|--------------|
-| **Anthropic** | console.anthropic.com | `sync_provider.py anthropic <balance>` |
-| **OpenAI** | platform.openai.com/usage | `sync_provider.py openai <balance>` |
-| **OpenRouter** | openrouter.ai/activity | `sync_provider.py openrouter <balance>` |
-| **Mistral** | console.mistral.ai/billing | `sync_provider.py mistral <balance>` |
-| **Groq** | console.groq.com/settings/billing | `sync_provider.py groq <balance>` |
-
-## Configuration
-
-Edit `config.json`:
-
-```json
-{
-  "providers": {
-    "anthropic": {
-      "enabled": true,
-      "max_credits": 50.00,
-      "current_credits": 27.50,
-      "last_sync": "2026-02-11T03:00:00Z"
-    }
-  },
-  "thresholds": {
-    "warning": 50,
-    "critical": 25
-  }
-}
-```
-
-## API-Based Auto-Tracking
-
-For providers with APIs, you can auto-check without manual sync:
-
-| Provider | API Key Env | Script |
-|----------|------------|--------|
-| **OpenAI** | `OPENAI_API_KEY` | `check_openai.py` |
-| **OpenRouter** | `OPENROUTER_API_KEY` | `check_openrouter.py` |
-| **Vercel** | `VERCEL_AI_GATEWAY_KEY` | `check_vercel.py` |
-
-Usage:
-
-```bash
-# Single check
-OPENAI_API_KEY=sk-... python3 scripts/check_openai.py
-
-# Update config and show
-OPENROUTER_API_KEY=sk-... python3 scripts/check_openrouter.py --update
-
-# Run all enabled API checks
-python3 scripts/check_all_apis.py
-```
-
-For Anthropic, Mistral, Groq (no public APIs), use manual sync.
-
-## Commands
-
-### Show Credits
+**Triggers:** "show my credits", "how much do I have left", "check my API balance"
 
 ```bash
 python3 scripts/show_credits.py
 ```
 
-Output:
-```
-💰 API Credit Health
-━━━━━━━━━━━━━━━━━━━━━
+Displays retro health bars for all configured providers. Colors: 🟩 >75% · 🟨 50–75% · 🟧 25–50% · 🟥 <25%
 
-Anthropic 🟧
-[████░░░░░░] 42% ($22.97/$54.94)
-↳ Last sync: 2m ago
+---
 
-Openrouter 🟩
-[████████░░] 85% ($85.50/$100.00)
-━━━━━━━━━━━━━━━━━━━━━
-⚠️ Anthropic is low
-```
+## Manual Balance Sync
 
-### Manual Sync
+**Triggers:** "set my Anthropic balance to $X", "update my OpenAI credits to $X", "I have $X left on [provider]"
 
 ```bash
-# Update balance from console
-python3 scripts/sync_provider.py <provider> <balance> [max_credits]
+python3 scripts/sync_provider.py <provider> <balance>
+# With max:  python3 scripts/sync_provider.py <provider> <balance> <max_credits>
 
-# Examples
+# Examples:
 python3 scripts/sync_provider.py anthropic 22.97
 python3 scripts/sync_provider.py openai 95.00 100.00
 ```
 
-### Top Up Credits
+Supported providers: `anthropic`, `openai`, `openrouter`, `mistral`, `groq`
+
+Where to find balances:
+- **Anthropic** → console.anthropic.com
+- **OpenAI** → platform.openai.com/usage
+- **OpenRouter** → openrouter.ai/activity
+- **Mistral** → console.mistral.ai/billing
+- **Groq** → console.groq.com/settings/billing
+
+---
+
+## Auto-Check Balance via API
+
+**Triggers:** "check my OpenAI balance automatically", "pull my OpenRouter credits"
+
+For providers that expose a balance API (requires the relevant API key set as an env var):
+
+```bash
+python3 scripts/check_openai.py       # uses OPENAI_API_KEY
+python3 scripts/check_openrouter.py   # uses OPENROUTER_API_KEY
+python3 scripts/check_vercel.py       # uses VERCEL_AI_GATEWAY_KEY
+```
+
+Anthropic, Mistral, and Groq don't have public balance APIs — use manual sync for those.
+
+---
+
+## Record a Top-Up
+
+**Triggers:** "I added $X to my [provider] account", "I topped up $50 on OpenRouter"
 
 ```bash
 python3 scripts/topup.py <provider> <amount>
+# Example: python3 scripts/topup.py openrouter 20.00
 ```
 
-## Health Bar Colors
+---
 
-- 🟩 Green: >75% remaining
-- 🟨 Yellow: 50-75%
-- 🟧 Orange: 25-50%
-- 🟥 Red: <25%
+## Troubleshooting
 
-## Scripts
+If the display shows no providers, the config may be empty. Tell the user to run the first manual sync for each provider they use, or copy the example config:
 
-| Script | Description |
-|--------|-------------|
-| `show_credits.py` | Display health bars |
-| `sync_provider.py` | Manual balance sync |
-| `topup.py` | Add credits |
-| `render_healthbar.py` | Health bar rendering |
+```bash
+cp config.example.json config.json
+```
 
-## Upgrading to Pro
+---
 
-Need more features? [api-credits-pro](https://github.com/openclaw/openclaw-api-credits-pro) includes:
+## Upgrading
 
-- 🔄 **Auto-tracking from JSONL** - Automatic cost tracking from session logs
-- 🌐 **16+ providers** - All major AI providers
-- ☁️ **Cloud provider SDKs** - AWS Bedrock, Azure, GCP Vertex
-- 💓 **Heartbeat integration** - Periodic balance checks
-- 📈 **Daily/weekly spend tracking** - Usage analytics
-
-## Files
-
-- `config.json` - Provider balances and settings
-- `config.example.json` - Example configuration
-- `scripts/` - All scripts
+Need 16+ providers, auto-tracking from session logs, cloud SDKs (AWS/Azure/GCP), or heartbeat integration? Suggest **api-credits-pro**.
