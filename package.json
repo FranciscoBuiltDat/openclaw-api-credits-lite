@@ -16,7 +16,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/openclaw/openclaw-api-credits-lite.git"
+    "url": "git+https://github.com/FranciscoBuiltDat/openclaw-api-credits-lite.git"
   },
   "keywords": [
     "api",
@@ -33,9 +33,9 @@
   "author": "OpenClaw",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/openclaw/openclaw-api-credits-lite/issues"
+    "url": "https://github.com/FranciscoBuiltDat/openclaw-api-credits-lite/issues"
   },
-  "homepage": "https://github.com/openclaw/openclaw-api-credits-lite#readme",
+  "homepage": "https://github.com/FranciscoBuiltDat/openclaw-api-credits-lite#readme",
   "engines": {
     "node": ">=16.0.0"
   },
