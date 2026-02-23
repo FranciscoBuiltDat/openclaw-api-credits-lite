@@ -32,8 +32,14 @@ def show_credits():
     warnings = []
     thresholds = config.get('thresholds', {'warning': 50, 'critical': 25})
     
+    providers = config.get('providers', {})
+    if not providers:
+        print("⚠️  No providers configured.")
+        print("   Copy config.example.json → config.json and add your providers.")
+        return 0
+
     # Show each enabled provider (lite version: 5 core providers only)
-    for provider_name, provider_config in config['providers'].items():
+    for provider_name, provider_config in providers.items():
         if provider_name.lower() not in SUPPORTED_PROVIDERS:
             continue
         
